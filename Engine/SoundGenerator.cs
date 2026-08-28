@@ -2,7 +2,9 @@ using System.IO;
 
 namespace AsteroidsWpf.Engine;
 
-/// <summary>Synthesizes short PCM WAV clips in memory so the game needs no shipped audio assets.</summary>
+/// <summary>
+/// Synthesizes short PCM WAV clips in memory so the game needs no shipped audio assets.
+/// </summary>
 public static class SoundGenerator
 {
     private const int SampleRate = 44100;

@@ -4,12 +4,6 @@ using AsteroidsWpf.Engine;
 
 namespace AsteroidsWpf.Game;
 
-public enum SaucerSize
-{
-    Big,
-    Small,
-}
-
 public sealed class Saucer : GameObject
 {
     private const float DirectionChangeIntervalSeconds = 1.4f;

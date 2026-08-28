@@ -40,9 +40,11 @@ public sealed class Ship : GameObject
         _flameAnimationTime = 0f;
     }
 
-    public void RotateLeft(float dt) => Rotation -= RotationRateRadPerSec * dt;
+    public void RotateLeft(float dt) => 
+        Rotation -= RotationRateRadPerSec * dt;
 
-    public void RotateRight(float dt) => Rotation += RotationRateRadPerSec * dt;
+    public void RotateRight(float dt) => 
+        Rotation += RotationRateRadPerSec * dt;
 
     public void ApplyThrust(float dt)
     {
@@ -76,7 +78,8 @@ public sealed class Ship : GameObject
             (float)(rng.NextDouble() * bounds.Width),
             (float)(rng.NextDouble() * bounds.Height));
         Velocity = Vector2.Zero;
-        InvulnerabilityRemaining = MathF.Max(InvulnerabilityRemaining, HyperspaceInvulnerabilitySeconds);
+        InvulnerabilityRemaining = 
+            MathF.Max(InvulnerabilityRemaining, HyperspaceInvulnerabilitySeconds);
     }
 
     public override void Update(float dt, Rect bounds)

@@ -9,5 +9,8 @@ public struct Particle
     public float LifeRemaining;
     public float MaxLife;
 
-    public readonly float LifeFraction => MaxLife <= 0f ? 0f : Math.Clamp(LifeRemaining / MaxLife, 0f, 1f);
+    public readonly float LifeFraction => 
+        MaxLife <= 0f 
+            ? 0f 
+            : Math.Clamp(LifeRemaining / MaxLife, 0f, 1f);
 }

@@ -8,18 +8,6 @@ namespace AsteroidsWpf;
 
 public sealed class GameCanvas : FrameworkElement
 {
-    private static readonly Color ShipColor = Colors.White;
-    private static readonly Color AsteroidColor = Color.FromRgb(210, 255, 220);
-    private static readonly Color BulletColor = Colors.White;
-    private static readonly Color SaucerColor = Color.FromRgb(160, 255, 170);
-    private static readonly Color ParticleColor = Color.FromRgb(255, 225, 160);
-    private static readonly Color TextColor = Colors.White;
-    private static readonly Typeface HudTypeface = new(
-        new FontFamily("Consolas"), 
-        FontStyles.Normal, 
-        FontWeights.Bold, 
-        FontStretches.Normal);
-
     public GameManager? GameManager { get; set; }
 
     protected override void OnRender(DrawingContext dc)
@@ -45,15 +33,18 @@ public sealed class GameCanvas : FrameworkElement
             case GameState.TitleScreen:
                 DrawTitleScreen(dc, bounds);
                 break;
+
             case GameState.Paused:
                 DrawHud(dc, gm, bounds);
                 DrawCenteredText(dc, bounds, "PAUSED", 42, 0);
                 break;
+
             case GameState.GameOver:
                 DrawHud(dc, gm, bounds);
                 DrawCenteredText(dc, bounds, "GAME OVER", 48, -20);
                 DrawCenteredText(dc, bounds, "PRESS ENTER", 20, 30);
                 break;
+
             case GameState.Playing:
                 DrawHud(dc, gm, bounds);
                 break;
@@ -85,11 +76,13 @@ public sealed class GameCanvas : FrameworkElement
                 ParticleColor.R, 
                 ParticleColor.G, 
                 ParticleColor.B);
+            
             var tail = 
                 particle.Position - System.Numerics.Vector2.Normalize(
                     particle.Velocity == System.Numerics.Vector2.Zero 
                         ? new System.Numerics.Vector2(1, 0) 
                         : particle.Velocity) * 4f;
+
             GlowRenderer.DrawGlowLine(
                 dc, 
                 new Point(particle.Position.X, particle.Position.Y), 
@@ -99,7 +92,10 @@ public sealed class GameCanvas : FrameworkElement
         var ship = gm.Ship;
         if (ship.IsAlive)
         {
-            bool visible = !ship.IsInvulnerable || ((int)(ship.InvulnerabilityRemaining * 12) % 2 == 0);
+            bool visible = 
+                !ship.IsInvulnerable 
+                || ((int)(ship.InvulnerabilityRemaining * 12) % 2 == 0);
+
             if (visible)
             {
                 GlowRenderer.DrawGlowPolyline(dc, ship.GetWorldShape(), true, ShipColor);
@@ -148,8 +144,11 @@ public sealed class GameCanvas : FrameworkElement
             RadiusX = 0.75,
             RadiusY = 0.75,
         };
-        vignette.GradientStops.Add(new GradientStop(Color.FromArgb(0, 0, 0, 0), 0.6));
-        vignette.GradientStops.Add(new GradientStop(Color.FromArgb(140, 0, 0, 0), 1.0));
+        vignette.GradientStops.Add(
+            new GradientStop(Color.FromArgb(0, 0, 0, 0), 0.6));
+        vignette.GradientStops.Add(
+            new GradientStop(Color.FromArgb(140, 0, 0, 0), 1.0));
+
         vignette.Freeze();
         dc.DrawRectangle(vignette, null, bounds);
     }
@@ -163,6 +162,7 @@ public sealed class GameCanvas : FrameworkElement
         {
             new(10, 0), new(-6, 5.5), new(-3, 0), new(-6, -5.5),
         };
+
         for (int i = 0; i < gm.Lives; i++)
         {
             var offset = new Point(bounds.Width - 30 - i * 26, 26);
@@ -176,12 +176,14 @@ public sealed class GameCanvas : FrameworkElement
         double cos = Math.Cos(angle);
         double sin = Math.Sin(angle);
         var result = new Point[local.Length];
+
         for (int i = 0; i < local.Length; i++)
         {
             double x = local[i].X * cos - local[i].Y * sin;
             double y = local[i].X * sin + local[i].Y * cos;
             result[i] = new Point(x + offset.X, y + offset.Y);
         }
+
         return result;
     }
 
@@ -190,23 +192,42 @@ public sealed class GameCanvas : FrameworkElement
         DrawCenteredText(dc, bounds, "ASTEROIDS", 64, -60);
         DrawCenteredText(dc, bounds, "PRESS ENTER TO START", 20, 10);
         DrawCenteredText(dc, bounds, "ARROWS / WASD: ROTATE + THRUST   SPACE: FIRE   SHIFT: HYPERSPACE   ESC: PAUSE", 14, 45);
+
+        var versionText = CreateFormattedText(Version, 13, TextColor);
+        var versionOrigin = new Point(bounds.Width - versionText.Width - 14, bounds.Height - versionText.Height - 12);
+        dc.DrawText(versionText, versionOrigin);
     }
 
-    private static void DrawCenteredText(DrawingContext dc, Rect bounds, string text, double size, double verticalOffset)
+    private static void DrawCenteredText(
+        DrawingContext dc, 
+        Rect bounds, 
+        string text, 
+        double size, 
+        double verticalOffset)
     {
         var formatted = CreateFormattedText(text, size, TextColor);
+        
         var origin = new Point(
             (bounds.Width - formatted.Width) / 2.0,
             (bounds.Height - formatted.Height) / 2.0 + verticalOffset);
+
         dc.DrawText(formatted, origin);
     }
 
-    private static void DrawText(DrawingContext dc, string text, double size, Point origin, Color color)
+    private static void DrawText(
+        DrawingContext dc, 
+        string text, 
+        double size, 
+        Point origin, 
+        Color color)
     {
         dc.DrawText(CreateFormattedText(text, size, color), origin);
     }
 
-    private static FormattedText CreateFormattedText(string text, double size, Color color)
+    private static FormattedText CreateFormattedText(
+        string text, 
+        double size, 
+        Color color)
     {
         return new FormattedText(
             text,
@@ -217,4 +238,18 @@ public sealed class GameCanvas : FrameworkElement
             new SolidColorBrush(color),
             1.0);
     }
+
+    private static readonly Color ShipColor = Colors.White;
+    private static readonly Color AsteroidColor = Color.FromRgb( 210, 255, 220 );
+    private static readonly Color BulletColor = Colors.White;
+    private static readonly Color SaucerColor = Color.FromRgb( 160, 255, 170 );
+    private static readonly Color ParticleColor = Color.FromRgb( 255, 225, 160 );
+    private static readonly Color TextColor = Colors.White;
+    private static readonly Typeface HudTypeface = new(
+        new FontFamily( "Consolas" ),
+        FontStyles.Normal,
+        FontWeights.Bold,
+        FontStretches.Normal );
+
+    public const string Version = "v0.1.2";
 }

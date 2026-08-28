@@ -4,13 +4,6 @@ using AsteroidsWpf.Engine;
 
 namespace AsteroidsWpf.Game;
 
-public enum AsteroidSize
-{
-    Large,
-    Medium,
-    Small,
-}
-
 public sealed class Asteroid : GameObject
 {
     private const int MinVertices = 8;

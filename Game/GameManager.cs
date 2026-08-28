@@ -217,13 +217,15 @@ public sealed class GameManager
             _sound.StopThrust();
         }
 
-        if (input.IsDown(Key.Space) && Ship.TryFire(out var bullet) && bullet is not null)
+        if (input.IsDown(Key.Space) 
+            && Ship.TryFire(out var bullet) 
+            && bullet is not null)
         {
             _bullets.Add(bullet);
             _sound.PlayFire();
         }
 
-        if (input.WasPressed(Key.LeftShift) || input.WasPressed(Key.Down) || input.WasPressed(Key.S))
+        if (input.WasPressed(Key.LeftShift))
         {
             Ship.Hyperspace(_rng, _bounds);
         }

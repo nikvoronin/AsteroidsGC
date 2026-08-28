@@ -3,12 +3,6 @@ using AsteroidsWpf.Engine;
 
 namespace AsteroidsWpf.Game;
 
-public enum BulletOwner
-{
-    Player,
-    Saucer,
-}
-
 public sealed class Bullet : GameObject
 {
     public const float Speed = 480f;
