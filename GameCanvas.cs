@@ -80,9 +80,20 @@ public sealed class GameCanvas : FrameworkElement
 
         foreach (var particle in gm.Particles)
         {
-            var color = Color.FromArgb((byte)(particle.LifeFraction * 255), ParticleColor.R, ParticleColor.G, ParticleColor.B);
-            var tail = particle.Position - System.Numerics.Vector2.Normalize(particle.Velocity == System.Numerics.Vector2.Zero ? new System.Numerics.Vector2(1, 0) : particle.Velocity) * 4f;
-            GlowRenderer.DrawGlowLine(dc, new Point(particle.Position.X, particle.Position.Y), new Point(tail.X, tail.Y), color);
+            var color = Color.FromArgb(
+                (byte)(particle.LifeFraction * 255), 
+                ParticleColor.R, 
+                ParticleColor.G, 
+                ParticleColor.B);
+            var tail = 
+                particle.Position - System.Numerics.Vector2.Normalize(
+                    particle.Velocity == System.Numerics.Vector2.Zero 
+                        ? new System.Numerics.Vector2(1, 0) 
+                        : particle.Velocity) * 4f;
+            GlowRenderer.DrawGlowLine(
+                dc, 
+                new Point(particle.Position.X, particle.Position.Y), 
+                new Point(tail.X, tail.Y), color);
         }
 
         var ship = gm.Ship;
@@ -95,11 +106,11 @@ public sealed class GameCanvas : FrameworkElement
                 if (ship.IsThrusting)
                 {
                     GlowRenderer.DrawGlowPolyline(
-                        dc, 
+                        dc,
                         RotateAndTranslate(
-                            ship.GetThrustFlameShape(), 
-                            ship), 
-                        false, 
+                            ship.GetThrustFlameShape(gm.LastDeltaTime),
+                            ship),
+                        false,
                         Colors.OrangeRed);
                 }
             }

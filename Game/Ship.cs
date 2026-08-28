@@ -17,6 +17,8 @@ public sealed class Ship : GameObject
     public float InvulnerabilityRemaining;
     public bool IsThrusting;
 
+    private float _flameAnimationTime;
+
     public Ship()
     {
         Radius = 12f;
@@ -35,6 +37,7 @@ public sealed class Ship : GameObject
         FireCooldownRemaining = 0f;
         InvulnerabilityRemaining = RespawnInvulnerabilitySeconds;
         IsThrusting = false;
+        _flameAnimationTime = 0f;
     }
 
     public void RotateLeft(float dt) => Rotation -= RotationRateRadPerSec * dt;
@@ -105,14 +108,22 @@ public sealed class Ship : GameObject
         ];
     }
 
-    public Point[] GetThrustFlameShape()
+    public Point[] GetThrustFlameShape(float dt)
     {
+        _flameAnimationTime += dt;
+
+        float flicker = MathF.Sin(_flameAnimationTime * 26f) * 0.5f
+            + MathF.Sin(_flameAnimationTime * 71f + 1.7f) * 0.3f;
+
         float r = Radius;
+        float tipX = -r * (1.75f + flicker * 0.5f);
+        float halfWidth = r * (0.3f + flicker * 0.04f);
+
         return
         [
-            new Point(-r * 0.75, r * 0.3),
-            new Point(-r * 1.75, 0),
-            new Point(-r * 0.75, -r * 0.3),
+            new Point(-r * 0.75, halfWidth),
+            new Point(tipX, 0),
+            new Point(-r * 0.75, -halfWidth),
         ];
     }
 }

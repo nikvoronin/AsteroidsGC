@@ -52,8 +52,11 @@ public sealed class GameManager
 
     public Saucer? Saucer => _saucer;
 
+    public float LastDeltaTime { get; private set; }
+
     public void Update(float dt, InputManager input, Rect bounds)
     {
+        LastDeltaTime = dt;
         _bounds = bounds;
 
         switch (State)
