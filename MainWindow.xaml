@@ -1,0 +1,12 @@
+<Window x:Class="AsteroidsWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:AsteroidsWpf"
+        Title="Asteroids" Height="800" Width="1100"
+        Background="Black"
+        WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=Canvas}">
+    <Grid>
+        <local:GameCanvas x:Name="Canvas" Focusable="True" ClipToBounds="True" />
+    </Grid>
+</Window>
