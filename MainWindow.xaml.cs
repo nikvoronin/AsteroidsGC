@@ -7,16 +7,14 @@ namespace AsteroidsGC;
 
 public partial class MainWindow : Window
 {
-    private readonly InputManager _input = new();
-    private readonly SoundManager _sound = new();
-    private readonly GameManager _gameManager;
-    private readonly GameLoop _gameLoop = new();
-
     public MainWindow()
     {
         InitializeComponent();
 
-        ColorScheme.Load(Path.Combine(AppContext.BaseDirectory, "ColorSchemes", "synthwave-magenta-cyan.json"));
+        ColorScheme.Load(Path.Combine(
+            AppContext.BaseDirectory, 
+            "ColorSchemes", 
+            "classic-crt.json" ) );
 
         _gameManager = new GameManager(_sound);
         Canvas.GameManager = _gameManager;
@@ -38,4 +36,9 @@ public partial class MainWindow : Window
         _gameManager.Update(dt, _input, bounds);
         Canvas.InvalidateVisual();
     }
+
+    private readonly InputManager _input = new();
+    private readonly SoundManager _sound = new();
+    private readonly GameManager _gameManager;
+    private readonly GameLoop _gameLoop = new();
 }

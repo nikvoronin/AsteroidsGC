@@ -89,6 +89,11 @@ public sealed class GameManager
                 break;
 
             case GameState.Paused:
+                if (input.WasPressed(Key.Q))
+                {
+                    ReturnToTitleScreen();
+                    break;
+                }
                 if (input.WasPressed(Key.Escape) || input.WasPressed(Key.Enter))
                 {
                     State = GameState.Playing;
@@ -104,6 +109,13 @@ public sealed class GameManager
         }
 
         input.EndFrame();
+    }
+
+    private void ReturnToTitleScreen()
+    {
+        _sound.StopThrust();
+        _sound.StopSaucer();
+        State = GameState.TitleScreen;
     }
 
     private void HandleColorSchemeHotkeys(InputManager input)

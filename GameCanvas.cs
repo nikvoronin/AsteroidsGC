@@ -37,6 +37,7 @@ public sealed class GameCanvas : FrameworkElement
             case GameState.Paused:
                 DrawHud(dc, gm, bounds);
                 DrawCenteredText(dc, bounds, "PAUSED", 42, 0);
+                DrawCenteredText(dc, bounds, "ESC / ENTER: RESUME   Q: QUIT TO TITLE", 16, 40);
                 break;
 
             case GameState.GameOver:
