@@ -1,7 +1,7 @@
 using System.Windows;
-using AsteroidsWpf.Engine;
+using AsteroidsGC.Engine;
 
-namespace AsteroidsWpf.Game;
+namespace AsteroidsGC.Game;
 
 public sealed class Bullet : GameObject
 {

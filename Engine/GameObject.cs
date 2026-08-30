@@ -1,7 +1,7 @@
 using System.Numerics;
 using System.Windows;
 
-namespace AsteroidsWpf.Engine;
+namespace AsteroidsGC.Engine;
 
 public abstract class GameObject
 {

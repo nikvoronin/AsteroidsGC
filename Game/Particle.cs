@@ -1,6 +1,6 @@
 using System.Numerics;
 
-namespace AsteroidsWpf.Game;
+namespace AsteroidsGC.Game;
 
 public struct Particle
 {

@@ -1,7 +1,7 @@
 using System.IO;
 using System.Media;
 
-namespace AsteroidsWpf.Engine;
+namespace AsteroidsGC.Engine;
 
 public sealed class SoundManager
 {

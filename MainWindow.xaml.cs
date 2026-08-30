@@ -1,8 +1,8 @@
 using System.Windows;
-using AsteroidsWpf.Engine;
-using AsteroidsWpf.Game;
+using AsteroidsGC.Engine;
+using AsteroidsGC.Game;
 
-namespace AsteroidsWpf;
+namespace AsteroidsGC;
 
 public partial class MainWindow : Window
 {

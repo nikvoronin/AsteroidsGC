@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Windows.Media;
 
-namespace AsteroidsWpf.Engine;
+namespace AsteroidsGC.Engine;
 
 public sealed class GameLoop
 {

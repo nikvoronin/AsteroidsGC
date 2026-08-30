@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
-using AsteroidsWpf.Engine;
-using AsteroidsWpf.Game;
+using AsteroidsGC.Engine;
+using AsteroidsGC.Game;
 
-namespace AsteroidsWpf;
+namespace AsteroidsGC;
 
 public sealed class GameCanvas : FrameworkElement
 {

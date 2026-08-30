@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace AsteroidsWpf.Engine;
+namespace AsteroidsGC.Engine;
 
 public sealed class InputManager
 {

@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace AsteroidsWpf.Engine;
+namespace AsteroidsGC.Engine;
 
 /// <summary>
 /// Synthesizes short PCM WAV clips in memory so the game needs no shipped audio assets.

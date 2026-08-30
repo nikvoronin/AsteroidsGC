@@ -1,10 +1,10 @@
 using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
-using AsteroidsWpf.Engine;
+using AsteroidsGC.Engine;
 using InputManager = AsteroidsWpf.Engine.InputManager;
 
-namespace AsteroidsWpf.Game;
+namespace AsteroidsGC.Game;
 
 public sealed class GameManager
 {

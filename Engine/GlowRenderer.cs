@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace AsteroidsWpf.Engine;
+namespace AsteroidsGC.Engine;
 
 public static class GlowRenderer
 {

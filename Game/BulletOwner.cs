@@ -1,4 +1,4 @@
-namespace AsteroidsWpf.Game;
+namespace AsteroidsGC.Game;
 
 public enum BulletOwner
 {
