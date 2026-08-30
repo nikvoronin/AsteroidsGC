@@ -262,7 +262,9 @@ public sealed class GameManager
 
         if (input.WasPressed(Key.LeftShift))
         {
+            var previousPosition = Ship.Position;
             Ship.Hyperspace(_rng, _bounds);
+            SpawnHyperspaceTrail(previousPosition, Ship.Position);
         }
     }
 
@@ -487,6 +489,30 @@ public sealed class GameManager
             Lives++;
             _nextExtraLifeScore += ExtraLifeScoreStep;
             _sound.PlayExtraLife();
+        }
+    }
+
+    private void SpawnHyperspaceTrail(Vector2 from, Vector2 to)
+    {
+        float distance = Vector2.Distance(from, to);
+        int count = Math.Clamp((int)(distance / 14f), 12, 40);
+
+        for (int i = 0; i < count; i++)
+        {
+            float t = (i + (float)_rng.NextDouble()) / count;
+            var point = Vector2.Lerp(from, to, t);
+
+            float angle = (float)(_rng.NextDouble() * MathF.Tau);
+            float speed = 20f + (float)_rng.NextDouble() * 60f;
+            float life = 0.25f + (float)_rng.NextDouble() * 0.35f;
+
+            _particles.Add(new Particle
+            {
+                Position = point,
+                Velocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * speed,
+                LifeRemaining = life,
+                MaxLife = life,
+            });
         }
     }
 
