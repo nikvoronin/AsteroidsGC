@@ -2,7 +2,7 @@ using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
 using AsteroidsGC.Engine;
-using InputManager = AsteroidsWpf.Engine.InputManager;
+using InputManager = AsteroidsGC.Engine.InputManager;
 
 namespace AsteroidsGC.Game;
 
@@ -54,6 +54,8 @@ public sealed class GameManager
 
     public float LastDeltaTime { get; private set; }
 
+    public TitleLogo TitleLogo { get; } = new();
+
     public void Update(float dt, InputManager input, Rect bounds)
     {
         LastDeltaTime = dt;
@@ -62,6 +64,7 @@ public sealed class GameManager
         switch (State)
         {
             case GameState.TitleScreen:
+                TitleLogo.Update(dt);
                 if (input.WasPressed(Key.Enter) || input.WasPressed(Key.Space))
                 {
                     StartNewGame();

@@ -31,7 +31,7 @@ public sealed class GameCanvas : FrameworkElement
         switch (gm.State)
         {
             case GameState.TitleScreen:
-                DrawTitleScreen(dc, bounds);
+                DrawTitleScreen(dc, bounds, gm.TitleLogo);
                 break;
 
             case GameState.Paused:
@@ -187,15 +187,44 @@ public sealed class GameCanvas : FrameworkElement
         return result;
     }
 
-    private static void DrawTitleScreen(DrawingContext dc, Rect bounds)
+    private static void DrawTitleScreen(DrawingContext dc, Rect bounds, TitleLogo logo)
     {
+        DrawTitleLogo(dc, bounds, logo);
+
         DrawCenteredText(dc, bounds, "ASTEROIDS", 64, -60);
         DrawCenteredText(dc, bounds, "PRESS ENTER TO START", 20, 10);
         DrawCenteredText(dc, bounds, "ARROWS / WASD: ROTATE + THRUST   SPACE: FIRE   SHIFT: HYPERSPACE   ESC: PAUSE", 14, 45);
 
         var versionText = CreateFormattedText(Version, 13, TextColor);
-        var versionOrigin = new Point(bounds.Width - versionText.Width - 14, bounds.Height - versionText.Height - 12);
+        
+        var versionOrigin = new Point(
+            bounds.Width - versionText.Width - 14, 
+            bounds.Height - versionText.Height - 12);
+
         dc.DrawText(versionText, versionOrigin);
+    }
+
+    private static void DrawTitleLogo(DrawingContext dc, Rect bounds, TitleLogo logo)
+    {
+        float scale = (float)Math.Min(bounds.Width, bounds.Height) * 0.22f;
+        var center = new Point(bounds.Width / 2.0, bounds.Height / 2.0);
+        double letterSpacing = scale * 1.05;
+        var gOrigin = new Point(center.X - letterSpacing, center.Y);
+        var cOrigin = new Point(center.X + letterSpacing, center.Y);
+
+        dc.PushOpacity(0.5);
+
+        foreach (var part in logo.GetLetterG(gOrigin, scale))
+        {
+            GlowRenderer.DrawGlowPolyline(dc, part, true, AsteroidColor);
+        }
+
+        foreach (var part in logo.GetLetterC(cOrigin, scale))
+        {
+            GlowRenderer.DrawGlowPolyline(dc, part, true, AsteroidColor);
+        }
+
+        dc.Pop();
     }
 
     private static void DrawCenteredText(
@@ -251,5 +280,5 @@ public sealed class GameCanvas : FrameworkElement
         FontWeights.Bold,
         FontStretches.Normal );
 
-    public const string Version = "v0.1.2";
+    public const string Version = "v0.1.3";
 }
