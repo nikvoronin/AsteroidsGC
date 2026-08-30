@@ -6,14 +6,6 @@ namespace AsteroidsGC.Game;
 
 public sealed class Asteroid : GameObject
 {
-    private const int MinVertices = 8;
-    private const int MaxVertices = 14;
-    private const float MinRadiusScale = 0.7f;
-    private const float MaxRadiusScale = 1.3f;
-
-    public readonly AsteroidSize Size;
-    private readonly Point[] _shape;
-
     private Asteroid(AsteroidSize size, float baseRadius, Random rng)
     {
         Size = size;
@@ -88,4 +80,12 @@ public sealed class Asteroid : GameObject
     }
 
     public override Point[] GetLocalShape() => _shape;
+
+    public readonly AsteroidSize Size;
+
+    private readonly Point[] _shape;
+    private const int MinVertices = 8;
+    private const int MaxVertices = 14;
+    private const float MinRadiusScale = 0.7f;
+    private const float MaxRadiusScale = 1.3f;
 }

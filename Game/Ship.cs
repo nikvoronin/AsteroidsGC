@@ -6,19 +6,6 @@ namespace AsteroidsGC.Game;
 
 public sealed class Ship : GameObject
 {
-    private const float RotationRateRadPerSec = 4.2f;
-    private const float ThrustAcceleration = 280f;
-    private const float Drag = 0.35f; // fraction of velocity retained after 1 full second
-    private const float FireCooldownSeconds = 0.22f;
-    private const float RespawnInvulnerabilitySeconds = 2.5f;
-    private const float HyperspaceInvulnerabilitySeconds = 1.0f;
-
-    public float FireCooldownRemaining;
-    public float InvulnerabilityRemaining;
-    public bool IsThrusting;
-
-    private float _flameAnimationTime;
-
     public Ship()
     {
         Radius = 12f;
@@ -129,4 +116,17 @@ public sealed class Ship : GameObject
             new Point(-r * 0.75, -halfWidth),
         ];
     }
+
+    public float FireCooldownRemaining;
+    public float InvulnerabilityRemaining;
+    public bool IsThrusting;
+
+    private float _flameAnimationTime;
+
+    private const float RotationRateRadPerSec = 4.2f;
+    private const float ThrustAcceleration = 280f;
+    private const float Drag = 0.35f; // fraction of velocity retained after 1 full second
+    private const float FireCooldownSeconds = 0.22f;
+    private const float RespawnInvulnerabilitySeconds = 2.5f;
+    private const float HyperspaceInvulnerabilitySeconds = 1.0f;
 }

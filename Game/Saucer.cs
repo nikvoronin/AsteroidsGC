@@ -6,16 +6,6 @@ namespace AsteroidsGC.Game;
 
 public sealed class Saucer : GameObject
 {
-    private const float DirectionChangeIntervalSeconds = 1.4f;
-    private const float BigFireIntervalSeconds = 1.7f;
-    private const float SmallFireIntervalSeconds = 1.2f;
-    private const float SmallAimJitterRadians = 0.35f;
-
-    public readonly SaucerSize Size;
-    private readonly Random _rng;
-    private float _directionChangeTimer;
-    private float _fireTimer;
-
     public Saucer(SaucerSize size, Vector2 position, float horizontalDirection, Random rng)
     {
         Size = size;
@@ -74,7 +64,8 @@ public sealed class Saucer : GameObject
         else
         {
             var toPlayer = playerPosition - Position;
-            angle = MathF.Atan2(toPlayer.Y, toPlayer.X) + ((float)_rng.NextDouble() - 0.5f) * SmallAimJitterRadians;
+            angle = MathF.Atan2(toPlayer.Y, toPlayer.X) 
+                + ((float)_rng.NextDouble() - 0.5f) * SmallAimJitterRadians;
         }
 
         var direction = new Vector2(MathF.Cos(angle), MathF.Sin(angle));
@@ -102,4 +93,14 @@ public sealed class Saucer : GameObject
             new Point(-wTop, h),
         ];
     }
+
+    public readonly SaucerSize Size;
+    private readonly Random _rng;
+    private float _directionChangeTimer;
+    private float _fireTimer;
+
+    private const float DirectionChangeIntervalSeconds = 1.4f;
+    private const float BigFireIntervalSeconds = 1.7f;
+    private const float SmallFireIntervalSeconds = 1.2f;
+    private const float SmallAimJitterRadians = 0.35f;
 }

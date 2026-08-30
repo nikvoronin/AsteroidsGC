@@ -1,26 +1,11 @@
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Windows.Media;
 
 namespace AsteroidsGC.Engine;
 
-public sealed record ColorSchemePreset(string FilePath, string Name);
-
 public sealed class ColorScheme
 {
-    public required Color Ship { get; init; }
-    public required Color Asteroid { get; init; }
-    public required Color Bullet { get; init; }
-    public required Color Saucer { get; init; }
-    public required Color Particle { get; init; }
-    public required Color Text { get; init; }
-    public required Color ThrustFlame { get; init; }
-    public required Color TitleLogoPrimary { get; init; }
-    public required Color TitleLogoSecondary { get; init; }
-    public string Name { get; init; } = "Classic";
-    public string? SourcePath { get; init; }
-
     public static ColorScheme Current { get; private set; } = BuildDefault();
 
     public static void Load(string path)
@@ -50,13 +35,19 @@ public sealed class ColorScheme
                 SourcePath = path,
             };
         }
-        catch (Exception ex) when (ex is IOException or JsonException or NotSupportedException or FormatException)
+        catch (Exception ex)
+            when (ex is IOException
+                or JsonException
+                or NotSupportedException
+                or FormatException)
         {
             // Keep the previously active scheme if the file is missing or malformed.
         }
     }
 
-    public static IReadOnlyList<ColorSchemePreset> DiscoverPresets(string directory, int maxCount = 9)
+    public static IReadOnlyList<ColorSchemePreset> DiscoverPresets(
+        string directory,
+        int maxCount = 9)
     {
         if (!Directory.Exists(directory))
         {
@@ -74,7 +65,8 @@ public sealed class ColorScheme
             try
             {
                 using var doc = JsonDocument.Parse(File.ReadAllText(file));
-                if (doc.RootElement.TryGetProperty("name", out var nameProp) && nameProp.GetString() is { } jsonName)
+                if (doc.RootElement.TryGetProperty("name", out var nameProp)
+                    && nameProp.GetString() is { } jsonName)
                 {
                     name = jsonName;
                 }
@@ -90,7 +82,8 @@ public sealed class ColorScheme
         return presets;
     }
 
-    private static Color ParseColor(string hex) => (Color)ColorConverter.ConvertFromString(hex);
+    private static Color ParseColor(string hex) =>
+        (Color)ColorConverter.ConvertFromString(hex);
 
     private static ColorScheme BuildDefault()
     {
@@ -124,4 +117,16 @@ public sealed class ColorScheme
         public string TitleLogoPrimary { get; set; } = "#D2FFDC";
         public string TitleLogoSecondary { get; set; } = "#D2FFDC";
     }
+
+    public required Color Ship { get; init; }
+    public required Color Asteroid { get; init; }
+    public required Color Bullet { get; init; }
+    public required Color Saucer { get; init; }
+    public required Color Particle { get; init; }
+    public required Color Text { get; init; }
+    public required Color ThrustFlame { get; init; }
+    public required Color TitleLogoPrimary { get; init; }
+    public required Color TitleLogoSecondary { get; init; }
+    public string Name { get; init; } = "Classic";
+    public string? SourcePath { get; init; }
 }

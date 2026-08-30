@@ -5,7 +5,11 @@ namespace AsteroidsGC.Engine;
 
 public static class CollisionHelper
 {
-    public static bool CirclesIntersect(Vector2 posA, float radiusA, Vector2 posB, float radiusB)
+    public static bool CirclesIntersect(
+        Vector2 posA, 
+        float radiusA, 
+        Vector2 posB, 
+        float radiusB)
     {
         float r = radiusA + radiusB;
         return Vector2.DistanceSquared(posA, posB) <= r * r;

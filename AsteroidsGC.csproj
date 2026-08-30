@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
-    <AssemblyName>AsteroidsWpf</AssemblyName>
-    <RootNamespace>AsteroidsWpf</RootNamespace>
+    <AssemblyName>AsteroidsGC</AssemblyName>
+    <RootNamespace>AsteroidsGC</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

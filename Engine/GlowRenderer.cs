@@ -5,8 +5,6 @@ namespace AsteroidsGC.Engine;
 
 public static class GlowRenderer
 {
-    private record struct GlowPass(double Thickness, byte Alpha);
-
     private static readonly GlowPass[] Passes =
     [
         new GlowPass(14.0, 35),
@@ -16,7 +14,11 @@ public static class GlowRenderer
         new GlowPass(1.25, 255),
     ];
 
-    public static void DrawGlowPolyline(DrawingContext dc, Point[] points, bool closed, Color color)
+    public static void DrawGlowPolyline(
+        DrawingContext dc, 
+        Point[] points, 
+        bool closed, 
+        Color color)
     {
         if (points.Length < 2)
         {
@@ -33,7 +35,8 @@ public static class GlowRenderer
 
         foreach (var pass in Passes)
         {
-            var brush = new SolidColorBrush(Color.FromArgb(pass.Alpha, color.R, color.G, color.B));
+            var brush = new SolidColorBrush(
+                Color.FromArgb(pass.Alpha, color.R, color.G, color.B));
             brush.Freeze();
             var pen = new Pen(brush, pass.Thickness)
             {
@@ -51,15 +54,23 @@ public static class GlowRenderer
         DrawGlowPolyline(dc, [a, b], false, color);
     }
 
-    public static void DrawGlowEllipse(DrawingContext dc, Point center, double radiusX, double radiusY, Color color)
+    public static void DrawGlowEllipse(
+        DrawingContext dc, 
+        Point center, 
+        double radiusX, 
+        double radiusY, 
+        Color color)
     {
         foreach (var pass in Passes)
         {
-            var brush = new SolidColorBrush(Color.FromArgb(pass.Alpha, color.R, color.G, color.B));
+            var brush = new SolidColorBrush(
+                Color.FromArgb(pass.Alpha, color.R, color.G, color.B));
             brush.Freeze();
             var pen = new Pen(brush, pass.Thickness);
             pen.Freeze();
             dc.DrawEllipse(null, pen, center, radiusX, radiusY);
         }
     }
+
+    private record struct GlowPass(double Thickness, byte Alpha);
 }

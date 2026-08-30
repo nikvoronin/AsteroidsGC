@@ -7,9 +7,10 @@ namespace AsteroidsGC.Engine;
 /// </summary>
 public static class SoundGenerator
 {
-    private const int SampleRate = 44100;
-
-    public static MemoryStream GenerateBeep(double frequency, double durationSeconds, double amplitude = 0.5)
+    public static MemoryStream GenerateBeep(
+        double frequency, 
+        double durationSeconds, 
+        double amplitude = 0.5)
     {
         int sampleCount = (int)(SampleRate * durationSeconds);
         var samples = new short[sampleCount];
@@ -23,7 +24,10 @@ public static class SoundGenerator
         return WriteWav(samples);
     }
 
-    public static MemoryStream GenerateNoiseBurst(double durationSeconds, double amplitude, double lowPassCutoff)
+    public static MemoryStream GenerateNoiseBurst(
+        double durationSeconds, 
+        double amplitude, 
+        double lowPassCutoff)
     {
         int sampleCount = (int)(SampleRate * durationSeconds);
         var samples = new short[sampleCount];
@@ -41,7 +45,10 @@ public static class SoundGenerator
         return WriteWav(samples);
     }
 
-    public static MemoryStream GenerateLoopingRumble(double durationSeconds, double frequency, double amplitude)
+    public static MemoryStream GenerateLoopingRumble(
+        double durationSeconds, 
+        double frequency, 
+        double amplitude)
     {
         int sampleCount = (int)(SampleRate * durationSeconds);
         var samples = new short[sampleCount];
@@ -56,7 +63,12 @@ public static class SoundGenerator
         return WriteWav(samples);
     }
 
-    public static MemoryStream GenerateWarble(double freqA, double freqB, double warbleRate, double durationSeconds, double amplitude)
+    public static MemoryStream GenerateWarble(
+        double freqA, 
+        double freqB, 
+        double warbleRate, 
+        double durationSeconds, 
+        double amplitude)
     {
         int sampleCount = (int)(SampleRate * durationSeconds);
         var samples = new short[sampleCount];
@@ -71,7 +83,10 @@ public static class SoundGenerator
         return WriteWav(samples);
     }
 
-    public static MemoryStream GenerateArpeggio(double[] frequencies, double noteDurationSeconds, double amplitude)
+    public static MemoryStream GenerateArpeggio(
+        double[] frequencies, 
+        double noteDurationSeconds, 
+        double amplitude)
     {
         int totalSamples = (int)(SampleRate * noteDurationSeconds * frequencies.Length);
         var samples = new short[totalSamples];
@@ -122,4 +137,6 @@ public static class SoundGenerator
         stream.Position = 0;
         return stream;
     }
+
+    private const int SampleRate = 44100;
 }

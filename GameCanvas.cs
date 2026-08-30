@@ -1,8 +1,9 @@
-using System.Globalization;
-using System.Windows;
-using System.Windows.Media;
 using AsteroidsGC.Engine;
 using AsteroidsGC.Game;
+using System.Globalization;
+using System.Numerics;
+using System.Windows;
+using System.Windows.Media;
 
 namespace AsteroidsGC;
 
@@ -16,12 +17,16 @@ public sealed class GameCanvas : FrameworkElement
         dc.DrawRectangle(Brushes.Black, null, bounds);
 
         var gm = GameManager;
-        if (gm is null || bounds.Width <= 0 || bounds.Height <= 0)
+        if (gm is null
+            || bounds.Width <= 0
+            || bounds.Height <= 0)
         {
             return;
         }
 
-        if (gm.State is GameState.Playing or GameState.Paused or GameState.GameOver)
+        if (gm.State is GameState.Playing
+            or GameState.Paused
+            or GameState.GameOver)
         {
             DrawDustfield(dc, bounds, gm.Dustfield, gm.Ship.Position);
             DrawEntities(dc, gm);
@@ -57,18 +62,30 @@ public sealed class GameCanvas : FrameworkElement
     {
         foreach (var asteroid in gm.Asteroids)
         {
-            GlowRenderer.DrawGlowPolyline(dc, asteroid.GetWorldShape(), true, ColorScheme.Current.Asteroid);
+            GlowRenderer.DrawGlowPolyline(
+                dc,
+                asteroid.GetWorldShape(),
+                true,
+                ColorScheme.Current.Asteroid);
         }
 
         foreach (var bullet in gm.Bullets)
         {
-            var color = bullet.Owner == BulletOwner.Player ? ColorScheme.Current.Bullet : ColorScheme.Current.Saucer;
+            var color =
+                bullet.Owner == BulletOwner.Player
+                    ? ColorScheme.Current.Bullet
+                    : ColorScheme.Current.Saucer;
+
             GlowRenderer.DrawGlowPolyline(dc, bullet.GetWorldShape(), false, color);
         }
 
         if (gm.Saucer is { IsAlive: true } saucer)
         {
-            GlowRenderer.DrawGlowPolyline(dc, saucer.GetWorldShape(), true, ColorScheme.Current.Saucer);
+            GlowRenderer.DrawGlowPolyline(
+                dc,
+                saucer.GetWorldShape(),
+                true,
+                ColorScheme.Current.Saucer);
         }
 
         foreach (var particle in gm.Particles)
@@ -79,29 +96,34 @@ public sealed class GameCanvas : FrameworkElement
                 particleColor.R,
                 particleColor.G,
                 particleColor.B);
-            
-            var tail = 
-                particle.Position - System.Numerics.Vector2.Normalize(
-                    particle.Velocity == System.Numerics.Vector2.Zero 
-                        ? new System.Numerics.Vector2(1, 0) 
+
+            var tail =
+                particle.Position - Vector2.Normalize(
+                    particle.Velocity == Vector2.Zero
+                        ? new Vector2(1, 0)
                         : particle.Velocity) * 4f;
 
             GlowRenderer.DrawGlowLine(
-                dc, 
-                new Point(particle.Position.X, particle.Position.Y), 
+                dc,
+                new Point(particle.Position.X, particle.Position.Y),
                 new Point(tail.X, tail.Y), color);
         }
 
         var ship = gm.Ship;
         if (ship.IsAlive)
         {
-            bool visible = 
-                !ship.IsInvulnerable 
+            bool visible =
+                !ship.IsInvulnerable
                 || ((int)(ship.InvulnerabilityRemaining * 12) % 2 == 0);
 
             if (visible)
             {
-                GlowRenderer.DrawGlowPolyline(dc, ship.GetWorldShape(), true, ColorScheme.Current.Ship);
+                GlowRenderer.DrawGlowPolyline(
+                    dc,
+                    ship.GetWorldShape(),
+                    true,
+                    ColorScheme.Current.Ship);
+
                 if (ship.IsThrusting)
                 {
                     GlowRenderer.DrawGlowPolyline(
@@ -116,7 +138,11 @@ public sealed class GameCanvas : FrameworkElement
         }
     }
 
-    private static void DrawDustfield(DrawingContext dc, Rect bounds, Dustfield dustfield, System.Numerics.Vector2 referenceOffset)
+    private static void DrawDustfield(
+        DrawingContext dc,
+        Rect bounds,
+        Dustfield dustfield,
+        Vector2 referenceOffset)
     {
         var baseColor = ColorScheme.Current.Text;
         var brushCache = new Dictionary<byte, SolidColorBrush>();
@@ -125,7 +151,8 @@ public sealed class GameCanvas : FrameworkElement
         {
             if (!brushCache.TryGetValue(dust.Alpha, out var brush))
             {
-                brush = new SolidColorBrush(Color.FromArgb(dust.Alpha, baseColor.R, baseColor.G, baseColor.B));
+                brush = new SolidColorBrush(
+                    Color.FromArgb(dust.Alpha, baseColor.R, baseColor.G, baseColor.B));
                 brush.Freeze();
                 brushCache[dust.Alpha] = brush;
             }
@@ -187,7 +214,11 @@ public sealed class GameCanvas : FrameworkElement
         for (int i = 0; i < gm.Lives; i++)
         {
             var offset = new Point(bounds.Width - 30 - i * 26, 26);
-            GlowRenderer.DrawGlowPolyline(dc, RotateLifeIcon(lifeShip, offset), true, ColorScheme.Current.Ship);
+            GlowRenderer.DrawGlowPolyline(
+                dc,
+                RotateLifeIcon(lifeShip, offset),
+                true,
+                ColorScheme.Current.Ship);
         }
     }
 
@@ -236,7 +267,11 @@ public sealed class GameCanvas : FrameworkElement
         {
             var preset = presets[i];
             bool isActive = preset.FilePath == ColorScheme.Current.SourcePath;
-            var color = isActive ? ColorScheme.Current.TitleLogoPrimary : ColorScheme.Current.Text;
+            var color =
+                isActive
+                    ? ColorScheme.Current.TitleLogoPrimary
+                    : ColorScheme.Current.Text;
+
             DrawText(dc, $"{i + 1}. {preset.Name}", 14, new Point(20, 40 + i * 20), color);
         }
     }
@@ -265,14 +300,14 @@ public sealed class GameCanvas : FrameworkElement
     }
 
     private static void DrawCenteredText(
-        DrawingContext dc, 
-        Rect bounds, 
-        string text, 
-        double size, 
+        DrawingContext dc,
+        Rect bounds,
+        string text,
+        double size,
         double verticalOffset)
     {
         var formatted = CreateFormattedText(text, size, ColorScheme.Current.Text);
-        
+
         var origin = new Point(
             (bounds.Width - formatted.Width) / 2.0,
             (bounds.Height - formatted.Height) / 2.0 + verticalOffset);
@@ -281,18 +316,18 @@ public sealed class GameCanvas : FrameworkElement
     }
 
     private static void DrawText(
-        DrawingContext dc, 
-        string text, 
-        double size, 
-        Point origin, 
+        DrawingContext dc,
+        string text,
+        double size,
+        Point origin,
         Color color)
     {
         dc.DrawText(CreateFormattedText(text, size, color), origin);
     }
 
     private static FormattedText CreateFormattedText(
-        string text, 
-        double size, 
+        string text,
+        double size,
         Color color)
     {
         return new FormattedText(
@@ -306,10 +341,10 @@ public sealed class GameCanvas : FrameworkElement
     }
 
     private static readonly Typeface HudTypeface = new(
-        new FontFamily( "Consolas" ),
+        new FontFamily("Consolas"),
         FontStyles.Normal,
         FontWeights.Bold,
-        FontStretches.Normal );
+        FontStretches.Normal);
 
     public const string Version = "v0.1.3";
 }

@@ -5,12 +5,6 @@ namespace AsteroidsGC.Game;
 
 public sealed class Bullet : GameObject
 {
-    public const float Speed = 480f;
-    private const float LifetimeSeconds = 1.1f;
-
-    public readonly BulletOwner Owner;
-    private float _timeToLive = LifetimeSeconds;
-
     public Bullet(BulletOwner owner)
     {
         Owner = owner;
@@ -33,4 +27,10 @@ public sealed class Bullet : GameObject
         new Point(-Radius, 0),
         new Point(Radius, 0),
     ];
+
+    public readonly BulletOwner Owner;
+    private float _timeToLive = LifetimeSeconds;
+
+    public const float Speed = 480f;
+    private const float LifetimeSeconds = 1.1f;
 }

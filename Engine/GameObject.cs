@@ -5,13 +5,6 @@ namespace AsteroidsGC.Engine;
 
 public abstract class GameObject
 {
-    public Vector2 Position;
-    public Vector2 Velocity;
-    public float Rotation;
-    public float RotationSpeed;
-    public float Radius;
-    public bool IsAlive = true;
-
     public abstract Point[] GetLocalShape();
 
     public virtual void Update(float dt, Rect bounds)
@@ -37,4 +30,11 @@ public abstract class GameObject
         }
         return world;
     }
+
+    public Vector2 Position;
+    public Vector2 Velocity;
+    public float Rotation;
+    public float RotationSpeed;
+    public float Radius;
+    public bool IsAlive = true;
 }

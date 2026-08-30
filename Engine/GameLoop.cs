@@ -5,12 +5,6 @@ namespace AsteroidsGC.Engine;
 
 public sealed class GameLoop
 {
-    private const float MaxDeltaSeconds = 0.1f;
-
-    private readonly Stopwatch _stopwatch = new();
-    private TimeSpan _lastElapsed;
-    private bool _running;
-
     public event Action<float>? Tick;
 
     public void Start()
@@ -56,4 +50,10 @@ public sealed class GameLoop
 
         Tick?.Invoke(dt);
     }
+
+    private readonly Stopwatch _stopwatch = new();
+    private TimeSpan _lastElapsed;
+    private bool _running;
+
+    private const float MaxDeltaSeconds = 0.1f;
 }

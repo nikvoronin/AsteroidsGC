@@ -4,9 +4,6 @@ namespace AsteroidsGC.Engine;
 
 public sealed class InputManager
 {
-    private readonly HashSet<Key> _held = [];
-    private readonly HashSet<Key> _pressedThisFrame = [];
-
     public void OnKeyDown(Key key)
     {
         if (_held.Add(key))
@@ -34,4 +31,7 @@ public sealed class InputManager
     {
         _pressedThisFrame.Clear();
     }
+
+    private readonly HashSet<Key> _held = [];
+    private readonly HashSet<Key> _pressedThisFrame = [];
 }

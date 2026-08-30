@@ -9,31 +9,13 @@ namespace AsteroidsGC.Game;
 
 public sealed class GameManager
 {
-    private const int StartingLives = 3;
-    private const float MinSaucerSpawnSeconds = 14f;
-    private const float MaxSaucerSpawnSeconds = 24f;
-    private const float ShipSafeSpawnRadius = 160f;
-    private const int ExtraLifeScoreStep = 10000;
-    private const float AsteroidFragmentationSpeed = 100f;
-    private const float ExtraAsteroidIntervalSeconds = 60f;
-
-    private readonly Random _rng = new();
-    private readonly SoundManager _sound;
-    private readonly List<Asteroid> _asteroids = [];
-    private readonly List<Bullet> _bullets = [];
-    private readonly List<Particle> _particles = [];
-
-    private Rect _bounds;
-    private Saucer? _saucer;
-    private float _saucerSpawnTimer;
-    private float _extraAsteroidTimer;
-    private int _nextExtraLifeScore = ExtraLifeScoreStep;
-
     public GameManager(SoundManager sound)
     {
         _sound = sound;
         Ship = new Ship();
-        ColorSchemePresets = ColorScheme.DiscoverPresets(Path.Combine(AppContext.BaseDirectory, "ColorSchemes"));
+        ColorSchemePresets = 
+            ColorScheme.DiscoverPresets(
+                Path.Combine(AppContext.BaseDirectory, "ColorSchemes"));
     }
 
     public GameState State { get; private set; } = GameState.TitleScreen;
@@ -62,7 +44,7 @@ public sealed class GameManager
 
     public IReadOnlyList<ColorSchemePreset> ColorSchemePresets { get; }
 
-    private static readonly Key[] SchemeHotkeys =
+    private static readonly Key[] SchemeHotkeys = 
         [Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9];
 
     public void Update(float dt, InputManager input, Rect bounds)
@@ -76,7 +58,8 @@ public sealed class GameManager
                 TitleLogo.Update(dt);
                 Dustfield.Update(dt);
                 HandleColorSchemeHotkeys(input);
-                if (input.WasPressed(Key.Enter) || input.WasPressed(Key.Space))
+                if (input.WasPressed(Key.Enter) 
+                    || input.WasPressed(Key.Space))
                 {
                     StartNewGame();
                 }
@@ -97,14 +80,16 @@ public sealed class GameManager
                     ReturnToTitleScreen();
                     break;
                 }
-                if (input.WasPressed(Key.Escape) || input.WasPressed(Key.Enter))
+                if (input.WasPressed(Key.Escape) 
+                    || input.WasPressed(Key.Enter))
                 {
                     State = GameState.Playing;
                 }
                 break;
 
             case GameState.GameOver:
-                if (input.WasPressed(Key.Enter) || input.WasPressed(Key.Space))
+                if (input.WasPressed(Key.Enter) 
+                    || input.WasPressed(Key.Space))
                 {
                     State = GameState.TitleScreen;
                 }
@@ -158,17 +143,21 @@ public sealed class GameManager
         int count = Math.Min(3 + Level, 11);
         for (int i = 0; i < count; i++)
         {
-            _asteroids.Add(Asteroid.CreateRandom(AsteroidSize.Large, RandomEdgePosition(), _rng));
+            _asteroids.Add(
+                Asteroid.CreateRandom(AsteroidSize.Large, RandomEdgePosition(), _rng));
         }
         ResetSaucerTimer();
     }
 
     private void ResetSaucerTimer()
     {
-        _saucerSpawnTimer = MinSaucerSpawnSeconds + (float)_rng.NextDouble() * (MaxSaucerSpawnSeconds - MinSaucerSpawnSeconds);
+        _saucerSpawnTimer = 
+            MinSaucerSpawnSeconds 
+            + (float)_rng.NextDouble() * (MaxSaucerSpawnSeconds - MinSaucerSpawnSeconds);
     }
 
-    private Vector2 BoundsCenter() => new((float)_bounds.Width / 2f, (float)_bounds.Height / 2f);
+    private Vector2 BoundsCenter() => 
+        new((float)_bounds.Width / 2f, (float)_bounds.Height / 2f);
 
     private Vector2 RandomEdgePosition()
     {
@@ -216,7 +205,8 @@ public sealed class GameManager
 
         ResolveCollisions();
 
-        if (_asteroids.Count == 0 && _saucer is null)
+        if (_asteroids.Count == 0 
+            && _saucer is null)
         {
             StartNextWave();
         }
@@ -234,16 +224,21 @@ public sealed class GameManager
 
     private void HandleShipInput(float dt, InputManager input)
     {
-        if (input.IsDown(Key.Left) || input.IsDown(Key.A))
+        if (input.IsDown(Key.Left) 
+            || input.IsDown(Key.A))
         {
             Ship.RotateLeft(dt);
         }
-        if (input.IsDown(Key.Right) || input.IsDown(Key.D))
+        if (input.IsDown(Key.Right) 
+            || input.IsDown(Key.D))
         {
             Ship.RotateRight(dt);
         }
 
-        bool thrusting = input.IsDown(Key.Up) || input.IsDown(Key.W);
+        bool thrusting = 
+            input.IsDown(Key.Up) 
+            || input.IsDown(Key.W);
+
         if (thrusting)
         {
             Ship.ApplyThrust(dt);
@@ -337,7 +332,9 @@ public sealed class GameManager
                 }
 
                 float closingSpeed = CollisionHelper.ResolveElasticCollision(a, b);
-                if (a.Size == b.Size && a.Size != AsteroidSize.Small && closingSpeed >= AsteroidFragmentationSpeed)
+                if (a.Size == b.Size 
+                    && a.Size != AsteroidSize.Small 
+                    && closingSpeed >= AsteroidFragmentationSpeed)
                 {
                     DestroyAsteroid(a, awardScore: false);
                     DestroyAsteroid(b, awardScore: false);
@@ -362,7 +359,11 @@ public sealed class GameManager
         {
             foreach (var asteroid in _asteroids)
             {
-                if (CollisionHelper.CirclesIntersect(Ship.Position, Ship.Radius, asteroid.Position, asteroid.Radius))
+                if (CollisionHelper.CirclesIntersect(
+                    Ship.Position, 
+                    Ship.Radius, 
+                    asteroid.Position, 
+                    asteroid.Radius))
                 {
                     DestroyAsteroid(asteroid, awardScore: true);
                     shipHitThisFrame = true;
@@ -370,8 +371,13 @@ public sealed class GameManager
                 }
             }
 
-            if (!shipHitThisFrame && _saucer is { IsAlive: true } saucer &&
-                CollisionHelper.CirclesIntersect(Ship.Position, Ship.Radius, saucer.Position, saucer.Radius))
+            if (!shipHitThisFrame 
+                && _saucer is { IsAlive: true } saucer 
+                && CollisionHelper.CirclesIntersect(
+                    Ship.Position, 
+                    Ship.Radius, 
+                    saucer.Position, 
+                    saucer.Radius))
             {
                 DestroySaucer(saucer, awardScore: true);
                 shipHitThisFrame = true;
@@ -391,7 +397,11 @@ public sealed class GameManager
                 for (int ai = _asteroids.Count - 1; ai >= 0; ai--)
                 {
                     var asteroid = _asteroids[ai];
-                    if (CollisionHelper.CirclesIntersect(bullet.Position, bullet.Radius, asteroid.Position, asteroid.Radius))
+                    if (CollisionHelper.CirclesIntersect(
+                        bullet.Position, 
+                        bullet.Radius, 
+                        asteroid.Position, 
+                        asteroid.Radius))
                     {
                         bullet.IsAlive = false;
                         DestroyAsteroid(asteroid, awardScore: true);
@@ -399,15 +409,26 @@ public sealed class GameManager
                     }
                 }
 
-                if (bullet.IsAlive && _saucer is { IsAlive: true } saucer &&
-                    CollisionHelper.CirclesIntersect(bullet.Position, bullet.Radius, saucer.Position, saucer.Radius))
+                if (bullet.IsAlive 
+                    && _saucer is { IsAlive: true } saucer 
+                    && CollisionHelper.CirclesIntersect(
+                        bullet.Position, 
+                        bullet.Radius, 
+                        saucer.Position, 
+                        saucer.Radius))
                 {
                     bullet.IsAlive = false;
                     DestroySaucer(saucer, awardScore: true);
                 }
             }
-            else if (bullet.Owner == BulletOwner.Saucer && !shipHitThisFrame && shipWasVulnerable &&
-                     CollisionHelper.CirclesIntersect(bullet.Position, bullet.Radius, Ship.Position, Ship.Radius))
+            else if (bullet.Owner == BulletOwner.Saucer 
+                && !shipHitThisFrame 
+                && shipWasVulnerable 
+                && CollisionHelper.CirclesIntersect(
+                    bullet.Position, 
+                    bullet.Radius, 
+                    Ship.Position, 
+                    Ship.Radius))
             {
                 bullet.IsAlive = false;
                 shipHitThisFrame = true;
@@ -434,10 +455,12 @@ public sealed class GameManager
                 _sound.PlayExplosionLarge();
                 if (awardScore) AddScore(20);
                 break;
+
             case AsteroidSize.Medium:
                 _sound.PlayExplosionMedium();
                 if (awardScore) AddScore(50);
                 break;
+
             case AsteroidSize.Small:
                 _sound.PlayExplosionSmall();
                 if (awardScore) AddScore(100);
@@ -453,10 +476,12 @@ public sealed class GameManager
         SpawnDebris(saucer.Position, saucer.Radius);
         _sound.PlayExplosionMedium();
         _sound.StopSaucer();
+
         if (awardScore)
         {
             AddScore(saucer.PointValue);
         }
+
         _saucer = null;
         ResetSaucerTimer();
     }
@@ -536,4 +561,24 @@ public sealed class GameManager
             });
         }
     }
+
+    private readonly Random _rng = new();
+    private readonly SoundManager _sound;
+    private readonly List<Asteroid> _asteroids = [];
+    private readonly List<Bullet> _bullets = [];
+    private readonly List<Particle> _particles = [];
+
+    private Rect _bounds;
+    private Saucer? _saucer;
+    private float _saucerSpawnTimer;
+    private float _extraAsteroidTimer;
+    private int _nextExtraLifeScore = ExtraLifeScoreStep;
+
+    private const int StartingLives = 3;
+    private const float MinSaucerSpawnSeconds = 14f;
+    private const float MaxSaucerSpawnSeconds = 24f;
+    private const float ShipSafeSpawnRadius = 160f;
+    private const int ExtraLifeScoreStep = 10000;
+    private const float AsteroidFragmentationSpeed = 100f;
+    private const float ExtraAsteroidIntervalSeconds = 60f;
 }
