@@ -1,0 +1,12 @@
+{
+  "name": "ZX Spectrum",
+  "ship": "#FFFFFF",
+  "asteroid": "#00FFFF",
+  "bullet": "#FFFFFF",
+  "saucer": "#FF00FF",
+  "particle": "#FFFF00",
+  "text": "#FFFFFF",
+  "thrustFlame": "#FF0000",
+  "titleLogoPrimary": "#FF0000",
+  "titleLogoSecondary": "#FFFF00"
+}

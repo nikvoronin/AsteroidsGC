@@ -1,0 +1,12 @@
+{
+  "name": "Black & White",
+  "ship": "#FFFFFF",
+  "asteroid": "#E0E0E0",
+  "bullet": "#FFFFFF",
+  "saucer": "#C0C0C0",
+  "particle": "#B0B0B0",
+  "text": "#FFFFFF",
+  "thrustFlame": "#FFFFFF",
+  "titleLogoPrimary": "#FFFFFF",
+  "titleLogoSecondary": "#909090"
+}
