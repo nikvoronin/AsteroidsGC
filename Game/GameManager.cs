@@ -58,6 +58,8 @@ public sealed class GameManager
 
     public TitleLogo TitleLogo { get; } = new();
 
+    public Dustfield Dustfield { get; } = new();
+
     public IReadOnlyList<ColorSchemePreset> ColorSchemePresets { get; }
 
     private static readonly Key[] SchemeHotkeys =
@@ -72,6 +74,7 @@ public sealed class GameManager
         {
             case GameState.TitleScreen:
                 TitleLogo.Update(dt);
+                Dustfield.Update(dt);
                 HandleColorSchemeHotkeys(input);
                 if (input.WasPressed(Key.Enter) || input.WasPressed(Key.Space))
                 {

@@ -23,6 +23,7 @@ public sealed class GameCanvas : FrameworkElement
 
         if (gm.State is GameState.Playing or GameState.Paused or GameState.GameOver)
         {
+            DrawDustfield(dc, bounds, gm.Dustfield, gm.Ship.Position);
             DrawEntities(dc, gm);
         }
 
@@ -115,6 +116,24 @@ public sealed class GameCanvas : FrameworkElement
         }
     }
 
+    private static void DrawDustfield(DrawingContext dc, Rect bounds, Dustfield dustfield, System.Numerics.Vector2 referenceOffset)
+    {
+        var baseColor = ColorScheme.Current.Text;
+        var brushCache = new Dictionary<byte, SolidColorBrush>();
+
+        foreach (var dust in dustfield.GetDust(referenceOffset, bounds))
+        {
+            if (!brushCache.TryGetValue(dust.Alpha, out var brush))
+            {
+                brush = new SolidColorBrush(Color.FromArgb(dust.Alpha, baseColor.R, baseColor.G, baseColor.B));
+                brush.Freeze();
+                brushCache[dust.Alpha] = brush;
+            }
+
+            dc.DrawEllipse(brush, null, dust.Position, dust.Radius, dust.Radius);
+        }
+    }
+
     private static Point[] RotateAndTranslate(Point[] local, Ship ship)
     {
         var world = new Point[local.Length];
@@ -191,6 +210,7 @@ public sealed class GameCanvas : FrameworkElement
 
     private static void DrawTitleScreen(DrawingContext dc, Rect bounds, GameManager gm)
     {
+        DrawDustfield(dc, bounds, gm.Dustfield, gm.Dustfield.TitleDriftOffset);
         DrawTitleLogo(dc, bounds, gm.TitleLogo);
         DrawColorSchemeMenu(dc, gm);
 
@@ -209,7 +229,7 @@ public sealed class GameCanvas : FrameworkElement
 
     private static void DrawColorSchemeMenu(DrawingContext dc, GameManager gm)
     {
-        DrawText(dc, "1-9: COLOR SCHEME", 14, new Point(20, 16), ColorScheme.Current.Text);
+        DrawText(dc, "COLOR SCHEME", 14, new Point(20, 16), ColorScheme.Current.Text);
 
         var presets = gm.ColorSchemePresets;
         for (int i = 0; i < presets.Count; i++)
