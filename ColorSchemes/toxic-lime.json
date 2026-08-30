@@ -1,0 +1,12 @@
+{
+  "name": "Toxic Lime",
+  "ship": "#EFFFD6",
+  "asteroid": "#AFFF00",
+  "bullet": "#EFFFD6",
+  "saucer": "#7CFF3D",
+  "particle": "#D4FF6A",
+  "text": "#EFFFD6",
+  "thrustFlame": "#FF2E2E",
+  "titleLogoPrimary": "#9BFF1F",
+  "titleLogoSecondary": "#FF2DD4"
+}

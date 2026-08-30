@@ -1,3 +1,4 @@
+using System.IO;
 using System.Numerics;
 using System.Windows;
 using System.Windows.Input;
@@ -32,6 +33,7 @@ public sealed class GameManager
     {
         _sound = sound;
         Ship = new Ship();
+        ColorSchemePresets = ColorScheme.DiscoverPresets(Path.Combine(AppContext.BaseDirectory, "ColorSchemes"));
     }
 
     public GameState State { get; private set; } = GameState.TitleScreen;
@@ -56,6 +58,11 @@ public sealed class GameManager
 
     public TitleLogo TitleLogo { get; } = new();
 
+    public IReadOnlyList<ColorSchemePreset> ColorSchemePresets { get; }
+
+    private static readonly Key[] SchemeHotkeys =
+        [Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9];
+
     public void Update(float dt, InputManager input, Rect bounds)
     {
         LastDeltaTime = dt;
@@ -65,6 +72,7 @@ public sealed class GameManager
         {
             case GameState.TitleScreen:
                 TitleLogo.Update(dt);
+                HandleColorSchemeHotkeys(input);
                 if (input.WasPressed(Key.Enter) || input.WasPressed(Key.Space))
                 {
                     StartNewGame();
@@ -96,6 +104,18 @@ public sealed class GameManager
         }
 
         input.EndFrame();
+    }
+
+    private void HandleColorSchemeHotkeys(InputManager input)
+    {
+        for (int i = 0; i < SchemeHotkeys.Length && i < ColorSchemePresets.Count; i++)
+        {
+            if (input.WasPressed(SchemeHotkeys[i]))
+            {
+                ColorScheme.Load(ColorSchemePresets[i].FilePath);
+                break;
+            }
+        }
     }
 
     private void StartNewGame()

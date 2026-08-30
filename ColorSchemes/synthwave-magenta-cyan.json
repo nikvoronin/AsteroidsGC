@@ -1,0 +1,12 @@
+{
+  "name": "Synthwave Magenta/Cyan",
+  "ship": "#FFFFFF",
+  "asteroid": "#39FFC8",
+  "bullet": "#FFFFFF",
+  "saucer": "#39E5FF",
+  "particle": "#FF6EC7",
+  "text": "#FFFFFF",
+  "thrustFlame": "#FF3D6E",
+  "titleLogoPrimary": "#FF2DD4",
+  "titleLogoSecondary": "#22E5FF"
+}

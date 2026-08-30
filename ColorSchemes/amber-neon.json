@@ -1,0 +1,12 @@
+{
+  "name": "Amber Neon",
+  "ship": "#FFF3D6",
+  "asteroid": "#FFA733",
+  "bullet": "#FFF3D6",
+  "saucer": "#FFC24B",
+  "particle": "#FFE066",
+  "text": "#FFF3D6",
+  "thrustFlame": "#FF5A1F",
+  "titleLogoPrimary": "#FF7A18",
+  "titleLogoSecondary": "#FFD400"
+}

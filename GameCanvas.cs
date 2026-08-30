@@ -31,7 +31,7 @@ public sealed class GameCanvas : FrameworkElement
         switch (gm.State)
         {
             case GameState.TitleScreen:
-                DrawTitleScreen(dc, bounds, gm.TitleLogo);
+                DrawTitleScreen(dc, bounds, gm);
                 break;
 
             case GameState.Paused:
@@ -55,27 +55,28 @@ public sealed class GameCanvas : FrameworkElement
     {
         foreach (var asteroid in gm.Asteroids)
         {
-            GlowRenderer.DrawGlowPolyline(dc, asteroid.GetWorldShape(), true, AsteroidColor);
+            GlowRenderer.DrawGlowPolyline(dc, asteroid.GetWorldShape(), true, ColorScheme.Current.Asteroid);
         }
 
         foreach (var bullet in gm.Bullets)
         {
-            var color = bullet.Owner == BulletOwner.Player ? BulletColor : SaucerColor;
+            var color = bullet.Owner == BulletOwner.Player ? ColorScheme.Current.Bullet : ColorScheme.Current.Saucer;
             GlowRenderer.DrawGlowPolyline(dc, bullet.GetWorldShape(), false, color);
         }
 
         if (gm.Saucer is { IsAlive: true } saucer)
         {
-            GlowRenderer.DrawGlowPolyline(dc, saucer.GetWorldShape(), true, SaucerColor);
+            GlowRenderer.DrawGlowPolyline(dc, saucer.GetWorldShape(), true, ColorScheme.Current.Saucer);
         }
 
         foreach (var particle in gm.Particles)
         {
+            var particleColor = ColorScheme.Current.Particle;
             var color = Color.FromArgb(
-                (byte)(particle.LifeFraction * 255), 
-                ParticleColor.R, 
-                ParticleColor.G, 
-                ParticleColor.B);
+                (byte)(particle.LifeFraction * 255),
+                particleColor.R,
+                particleColor.G,
+                particleColor.B);
             
             var tail = 
                 particle.Position - System.Numerics.Vector2.Normalize(
@@ -98,7 +99,7 @@ public sealed class GameCanvas : FrameworkElement
 
             if (visible)
             {
-                GlowRenderer.DrawGlowPolyline(dc, ship.GetWorldShape(), true, ShipColor);
+                GlowRenderer.DrawGlowPolyline(dc, ship.GetWorldShape(), true, ColorScheme.Current.Ship);
                 if (ship.IsThrusting)
                 {
                     GlowRenderer.DrawGlowPolyline(
@@ -107,7 +108,7 @@ public sealed class GameCanvas : FrameworkElement
                             ship.GetThrustFlameShape(gm.LastDeltaTime),
                             ship),
                         false,
-                        Colors.OrangeRed);
+                        ColorScheme.Current.ThrustFlame);
                 }
             }
         }
@@ -155,8 +156,8 @@ public sealed class GameCanvas : FrameworkElement
 
     private static void DrawHud(DrawingContext dc, GameManager gm, Rect bounds)
     {
-        DrawText(dc, $"SCORE {gm.Score:D5}", 18, new Point(20, 16), TextColor);
-        DrawText(dc, $"LEVEL {gm.Level}", 16, new Point(20, 44), TextColor);
+        DrawText(dc, $"SCORE {gm.Score:D5}", 18, new Point(20, 16), ColorScheme.Current.Text);
+        DrawText(dc, $"LEVEL {gm.Level}", 16, new Point(20, 44), ColorScheme.Current.Text);
 
         var lifeShip = new Point[]
         {
@@ -166,7 +167,7 @@ public sealed class GameCanvas : FrameworkElement
         for (int i = 0; i < gm.Lives; i++)
         {
             var offset = new Point(bounds.Width - 30 - i * 26, 26);
-            GlowRenderer.DrawGlowPolyline(dc, RotateLifeIcon(lifeShip, offset), true, ShipColor);
+            GlowRenderer.DrawGlowPolyline(dc, RotateLifeIcon(lifeShip, offset), true, ColorScheme.Current.Ship);
         }
     }
 
@@ -187,21 +188,36 @@ public sealed class GameCanvas : FrameworkElement
         return result;
     }
 
-    private static void DrawTitleScreen(DrawingContext dc, Rect bounds, TitleLogo logo)
+    private static void DrawTitleScreen(DrawingContext dc, Rect bounds, GameManager gm)
     {
-        DrawTitleLogo(dc, bounds, logo);
+        DrawTitleLogo(dc, bounds, gm.TitleLogo);
+        DrawColorSchemeMenu(dc, gm);
 
         DrawCenteredText(dc, bounds, "ASTEROIDS", 64, -60);
         DrawCenteredText(dc, bounds, "PRESS ENTER TO START", 20, 10);
         DrawCenteredText(dc, bounds, "ARROWS / WASD: ROTATE + THRUST   SPACE: FIRE   SHIFT: HYPERSPACE   ESC: PAUSE", 14, 45);
 
-        var versionText = CreateFormattedText(Version, 13, TextColor);
-        
+        var versionText = CreateFormattedText(Version, 13, ColorScheme.Current.Text);
+
         var versionOrigin = new Point(
-            bounds.Width - versionText.Width - 14, 
+            bounds.Width - versionText.Width - 14,
             bounds.Height - versionText.Height - 12);
 
         dc.DrawText(versionText, versionOrigin);
+    }
+
+    private static void DrawColorSchemeMenu(DrawingContext dc, GameManager gm)
+    {
+        DrawText(dc, "1-9: COLOR SCHEME", 14, new Point(20, 16), ColorScheme.Current.Text);
+
+        var presets = gm.ColorSchemePresets;
+        for (int i = 0; i < presets.Count; i++)
+        {
+            var preset = presets[i];
+            bool isActive = preset.FilePath == ColorScheme.Current.SourcePath;
+            var color = isActive ? ColorScheme.Current.TitleLogoPrimary : ColorScheme.Current.Text;
+            DrawText(dc, $"{i + 1}. {preset.Name}", 14, new Point(20, 40 + i * 20), color);
+        }
     }
 
     private static void DrawTitleLogo(DrawingContext dc, Rect bounds, TitleLogo logo)
@@ -216,12 +232,12 @@ public sealed class GameCanvas : FrameworkElement
 
         foreach (var part in logo.GetLetterG(gOrigin, scale))
         {
-            GlowRenderer.DrawGlowPolyline(dc, part, true, AsteroidColor);
+            GlowRenderer.DrawGlowPolyline(dc, part, true, ColorScheme.Current.TitleLogoPrimary);
         }
 
         foreach (var part in logo.GetLetterC(cOrigin, scale))
         {
-            GlowRenderer.DrawGlowPolyline(dc, part, true, AsteroidColor);
+            GlowRenderer.DrawGlowPolyline(dc, part, true, ColorScheme.Current.TitleLogoSecondary);
         }
 
         dc.Pop();
@@ -234,7 +250,7 @@ public sealed class GameCanvas : FrameworkElement
         double size, 
         double verticalOffset)
     {
-        var formatted = CreateFormattedText(text, size, TextColor);
+        var formatted = CreateFormattedText(text, size, ColorScheme.Current.Text);
         
         var origin = new Point(
             (bounds.Width - formatted.Width) / 2.0,
@@ -268,12 +284,6 @@ public sealed class GameCanvas : FrameworkElement
             1.0);
     }
 
-    private static readonly Color ShipColor = Colors.White;
-    private static readonly Color AsteroidColor = Color.FromRgb( 210, 255, 220 );
-    private static readonly Color BulletColor = Colors.White;
-    private static readonly Color SaucerColor = Color.FromRgb( 160, 255, 170 );
-    private static readonly Color ParticleColor = Color.FromRgb( 255, 225, 160 );
-    private static readonly Color TextColor = Colors.White;
     private static readonly Typeface HudTypeface = new(
         new FontFamily( "Consolas" ),
         FontStyles.Normal,

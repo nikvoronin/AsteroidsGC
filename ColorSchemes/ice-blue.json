@@ -1,0 +1,12 @@
+{
+  "name": "Ice Blue",
+  "ship": "#E8F6FF",
+  "asteroid": "#5FD8FF",
+  "bullet": "#E8F6FF",
+  "saucer": "#8FE8FF",
+  "particle": "#BEEBFF",
+  "text": "#E8F6FF",
+  "thrustFlame": "#FF3D9A",
+  "titleLogoPrimary": "#2E9BFF",
+  "titleLogoSecondary": "#AEEBFF"
+}

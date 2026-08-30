@@ -1,0 +1,12 @@
+{
+  "name": "Electric Violet/Lime",
+  "ship": "#F2F2FF",
+  "asteroid": "#CCFF33",
+  "bullet": "#F2F2FF",
+  "saucer": "#AEFF00",
+  "particle": "#C77DFF",
+  "text": "#F2F2FF",
+  "thrustFlame": "#FF3860",
+  "titleLogoPrimary": "#9D4EFF",
+  "titleLogoSecondary": "#CCFF33"
+}

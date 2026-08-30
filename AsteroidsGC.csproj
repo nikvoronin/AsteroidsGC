@@ -10,4 +10,10 @@
     <RootNamespace>AsteroidsWpf</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="ColorSchemes\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

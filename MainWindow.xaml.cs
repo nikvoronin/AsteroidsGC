@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using AsteroidsGC.Engine;
 using AsteroidsGC.Game;
@@ -14,6 +15,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        ColorScheme.Load(Path.Combine(AppContext.BaseDirectory, "ColorSchemes", "synthwave-magenta-cyan.json"));
 
         _gameManager = new GameManager(_sound);
         Canvas.GameManager = _gameManager;

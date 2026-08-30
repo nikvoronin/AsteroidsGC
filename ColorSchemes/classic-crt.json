@@ -1,0 +1,12 @@
+{
+  "name": "Classic CRT",
+  "ship": "#FFFFFF",
+  "asteroid": "#D2FFDC",
+  "bullet": "#FFFFFF",
+  "saucer": "#A0FFAA",
+  "particle": "#FFE1A0",
+  "text": "#FFFFFF",
+  "thrustFlame": "#FF4500",
+  "titleLogoPrimary": "#D2FFDC",
+  "titleLogoSecondary": "#D2FFDC"
+}

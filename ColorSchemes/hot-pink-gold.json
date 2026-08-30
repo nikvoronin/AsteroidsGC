@@ -1,0 +1,12 @@
+{
+  "name": "Hot Pink & Gold",
+  "ship": "#FFF6E0",
+  "asteroid": "#FFC93C",
+  "bullet": "#FFF6E0",
+  "saucer": "#FFD700",
+  "particle": "#FF6FB5",
+  "text": "#FFF6E0",
+  "thrustFlame": "#FF4136",
+  "titleLogoPrimary": "#FF2E92",
+  "titleLogoSecondary": "#FFC300"
+}
