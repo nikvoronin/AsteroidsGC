@@ -33,7 +33,9 @@ public partial class MainWindow : Window
     private void OnTick(float dt)
     {
         var bounds = new Rect(0, 0, Canvas.ActualWidth, Canvas.ActualHeight);
+
         _gameManager.Update(dt, _input, bounds);
+
         Canvas.InvalidateVisual();
     }
 

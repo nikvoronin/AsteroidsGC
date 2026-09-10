@@ -2,6 +2,8 @@
 
 A from-scratch clone of Atari's 1979 arcade classic *Asteroids*, built with C# on .NET 10 and [WPF](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/overview/). It reproduces the original's vector-monitor look.
 
+/Screenshot placeholder/
+
 - [How to play](#how-to-play)
 - [Gameplay rules](#gameplay-rules)
 - [Color schemes](#color-schemes)
@@ -64,15 +66,15 @@ The game's entire palette — ship, asteroids, bullets, saucer, particles, HUD t
 
 At startup `ColorScheme.DiscoverPresets` scans that folder alphabetically (up to nine) and the title screen lists whatever it finds, one line per file, selectable on the spot with `1`-`9` — the whole game repaints instantly, no restart needed. Nine presets ship out of the box:
 
-- Amber Neon
-- Black & White
-- Classic CRT (the original palette this game launched with)
-- Electric Violet/Lime
-- Hot Pink & Gold
-- Ice Blue
-- Synthwave Magenta/Cyan
-- Toxic Lime
-- ZX Spectrum
+1. Amber Neon
+2. Black & White
+3. Classic CRT (the original palette this game launched with)
+4. Electric Violet/Lime
+5. Hot Pink & Gold
+6. Ice Blue
+7. Spectrum ZX
+8. Synthwave Magenta/Cyan
+9. Toxic Lime
 
 Adding your own is just dropping another `.json` file into `ColorSchemes/` — no code changes required.
 
