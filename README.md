@@ -2,7 +2,7 @@
 
 A from-scratch clone of Atari's 1979 arcade classic *Asteroids*, built with C# on .NET 10 and [WPF](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/overview/). It reproduces the original's vector-monitor look.
 
-/Screenshot placeholder/
+![asteroids-gc_0-1-3_main-menu](https://github.com/user-attachments/assets/6cdf1950-890c-4ff5-a6e8-a78a19437ce5)
 
 - [How to play](#how-to-play)
 - [Gameplay rules](#gameplay-rules)
