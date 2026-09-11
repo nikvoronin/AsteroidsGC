@@ -19,6 +19,23 @@ public sealed class SoundManager
         _thrust = Load(SoundGenerator.GenerateLoopingRumble(0.4, 65, 0.22));
         _saucer = Load(SoundGenerator.GenerateWarble(480, 620, 6, 1.0, 0.28));
         _extraLife = Load(SoundGenerator.GenerateArpeggio([440, 554, 659, 880], 0.09, 0.4));
+        _soundOnChime = Load(SoundGenerator.GenerateArpeggio([660, 880, 1100], 0.06, 0.35));
+    }
+
+    public bool SoundEnabled { get; private set; } = true;
+
+    public void ToggleSound()
+    {
+        SoundEnabled = !SoundEnabled;
+        if (SoundEnabled)
+        {
+            TryPlay(_soundOnChime);
+        }
+        else
+        {
+            StopThrust();
+            StopSaucer();
+        }
     }
 
     private static SoundPlayer[] CreatePool(Func<MemoryStream> factory, int size = 2)
@@ -105,13 +122,21 @@ public sealed class SoundManager
         return player;
     }
 
-    private static void TryPlay(SoundPlayer player)
+    private void TryPlay(SoundPlayer player)
     {
+        if (!SoundEnabled)
+        {
+            return;
+        }
         try { player.Play(); } catch (Exception) { }
     }
 
-    private static void TryPlayLooping(SoundPlayer player)
+    private void TryPlayLooping(SoundPlayer player)
     {
+        if (!SoundEnabled)
+        {
+            return;
+        }
         try { player.PlayLooping(); } catch (Exception) { }
     }
 
@@ -127,6 +152,7 @@ public sealed class SoundManager
     private readonly SoundPlayer _thrust;
     private readonly SoundPlayer _saucer;
     private readonly SoundPlayer _extraLife;
+    private readonly SoundPlayer _soundOnChime;
 
     private int _explosionLargeIndex;
     private int _explosionMediumIndex;

@@ -44,6 +44,8 @@ public sealed class GameManager
 
     public IReadOnlyList<ColorSchemePreset> ColorSchemePresets { get; }
 
+    public bool SoundEnabled => _sound.SoundEnabled;
+
     private static readonly Key[] SchemeHotkeys = 
         [Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9];
 
@@ -51,6 +53,11 @@ public sealed class GameManager
     {
         LastDeltaTime = dt;
         _bounds = bounds;
+
+        if (input.WasPressed(Key.M))
+        {
+            _sound.ToggleSound();
+        }
 
         switch (State)
         {
@@ -516,6 +523,7 @@ public sealed class GameManager
         {
             Lives++;
             _nextExtraLifeScore += ExtraLifeScoreStep;
+
             _sound.PlayExtraLife();
         }
     }

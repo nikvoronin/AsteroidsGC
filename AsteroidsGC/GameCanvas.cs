@@ -38,12 +38,13 @@ public sealed class GameCanvas : FrameworkElement
         {
             case GameState.TitleScreen:
                 DrawTitleScreen(dc, bounds, gm);
+                DrawSoundToggle(dc, bounds, gm.SoundEnabled);
                 break;
 
             case GameState.Paused:
                 DrawHud(dc, gm, bounds);
                 DrawCenteredText(dc, bounds, "PAUSED", 42, 0);
-                DrawCenteredText(dc, bounds, "ESC / ENTER: RESUME   Q: QUIT TO TITLE", 16, 40);
+                DrawCenteredText(dc, bounds, "ESC / ENTER: RESUME • Q: QUIT TO TITLE", 16, 40);
                 break;
 
             case GameState.GameOver:
@@ -201,6 +202,20 @@ public sealed class GameCanvas : FrameworkElement
         dc.DrawRectangle(vignette, null, bounds);
     }
 
+    private static void DrawSoundToggle(DrawingContext dc, Rect bounds, bool soundEnabled)
+    {
+        var text = soundEnabled ? "SOUND ON [M]" : "SOUND OFF [M]";
+        var baseColor = ColorScheme.Current.Text;
+        var color = soundEnabled
+            ? baseColor
+            : Color.FromArgb(110, baseColor.R, baseColor.G, baseColor.B);
+
+        var formatted = CreateFormattedText(text, 14, color);
+        var origin = new Point(bounds.Width - formatted.Width - 20, 16);
+
+        dc.DrawText(formatted, origin);
+    }
+
     private static void DrawHud(DrawingContext dc, GameManager gm, Rect bounds)
     {
         DrawText(dc, $"SCORE {gm.Score:D5}", 18, new Point(20, 16), ColorScheme.Current.Text);
@@ -247,7 +262,7 @@ public sealed class GameCanvas : FrameworkElement
 
         DrawCenteredText(dc, bounds, "ASTEROIDS", 64, -60);
         DrawCenteredText(dc, bounds, "PRESS ENTER TO START", 20, 10);
-        DrawCenteredText(dc, bounds, "ARROWS / WASD: ROTATE + THRUST   SPACE: FIRE   SHIFT: HYPERSPACE   ESC: PAUSE", 14, 45);
+        DrawCenteredText(dc, bounds, "ARROWS / WASD: ROTATE + THRUST • SPACE: FIRE • SHIFT: HYPERSPACE • ESC: PAUSE", 14, 45);
 
         var versionText = CreateFormattedText(Version, 13, ColorScheme.Current.Text);
 
@@ -346,5 +361,5 @@ public sealed class GameCanvas : FrameworkElement
         FontWeights.Bold,
         FontStretches.Normal);
 
-    public const string Version = "v0.1.3";
+    public const string Version = "v0.1.4";
 }
